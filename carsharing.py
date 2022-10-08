@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import uvicorn
 
 app = FastAPI()
 
@@ -24,7 +25,7 @@ def welcome(name):
 @app.get("/api/cars")
 def get_cars(size:str|None, doors:int|None) -> list: #size:str|None means that we accept str or none values
 # def get_cars(size:Optional[str] = None, doors:Optional[str] = None) -> List: for python < 3.10 
-    """Return all car or filter by size"""
+    """Return all car or filter by size or number of doors """
     result = db
     if size:
         result = [car for car in result if car['size'] == size]
@@ -33,3 +34,12 @@ def get_cars(size:str|None, doors:int|None) -> list: #size:str|None means that w
     return result
 
 #You can make a request like this: http://127.0.0.1:8000/api/cars?size=s&doors=3
+
+@app.get("/api/cars/{id}") #Path parameter - This creates a unique url for each car
+def car_by_id(id: int) -> dict:
+    """Returns the information of a car by id"""
+    result = [car for car in db if car['id'] == id]
+    return result[0]
+
+if __name__ == "__main__":
+    uvicorn.run("carsharing:app", reload=True)
