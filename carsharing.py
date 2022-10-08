@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import uvicorn
 
 app = FastAPI()
@@ -39,7 +39,10 @@ def get_cars(size:str|None, doors:int|None) -> list: #size:str|None means that w
 def car_by_id(id: int) -> dict:
     """Returns the information of a car by id"""
     result = [car for car in db if car['id'] == id]
-    return result[0]
+    if result:
+        return result[0]
+    else:
+        raise HTTPException(status_code=404, detail=f"No car with id={id}.")
 
 if __name__ == "__main__":
     uvicorn.run("carsharing:app", reload=True)
