@@ -44,5 +44,6 @@ def car_by_id(id: int) -> dict:
     else:
         raise HTTPException(status_code=404, detail=f"No car with id={id}.")
 #You can make a request like this: http://127.0.0.1:8000/api/cars/1
+
 if __name__ == "__main__":
     uvicorn.run("carsharing:app", reload=True)
