@@ -9,4 +9,6 @@ Basic FastAPI implementation from Pluralsight. In this implementation you will f
 - Testing
 - Docker Deployment
 
-This repo is based on the work done by Reindert-Jan Ekker on [FastAPI Fundamentals course](https://www.pluralsight.com/courses/fastapi-fundamentals) from Pluralsight
+This repo is based on the work done by Reindert-Jan Ekker on [FastAPI Fundamentals course](https://www.pluralsight.com/courses/fastapi-fundamentals) from Pluralsight.
+
+You can find the original implementation in here: [codesensei-courses/fastapi_fundamentals](https://github.com/codesensei-courses/fastapi_fundamentals) 
