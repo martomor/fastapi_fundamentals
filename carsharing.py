@@ -22,6 +22,9 @@ def welcome(name):
 #You can make a request like this: http://127.0.0.1:8000/?name=Martin
 
 @app.get("/api/cars")
-def get_cars():
-    """Return all cars"""
-    return db
+def get_cars(size=None):
+    """Return all car or filter by size"""
+    if size:
+        return [car for car in db if car['size'] == size]
+    else:
+        return db
