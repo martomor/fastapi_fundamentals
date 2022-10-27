@@ -14,3 +14,7 @@ def load_db() -> list[Car]:
     """Load a list of Car objects from a JSON file"""
     with open ("cars.json") as f:
         return [Car.parse_obj(obj) for obj in json.load(f)]
+
+def save_db(cars: list[Car]):
+    with open("cars.json", "w") as f:
+        json.dump([car.dict() for car in cars], f, indent=4)
