@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import uvicorn
 
-from schemas import Car, load_db, save_db
+from schemas import CarInput, CarOutput, load_db, save_db
 
 app = FastAPI()
 
@@ -32,9 +32,13 @@ def car_by_id(id: int) -> dict:
 #You can make a request like this: http://127.0.0.1:8000/api/cars/1
 
 @app.post("/api/cars") #Post operation, cannot be called as an url
-def add_car(car:Car):
-    db.append(car)
+def add_car(car:CarInput) -> CarOutput:
+    new_car = CarOutput(size=car.size, doors=car.doors,
+                        fuel=car.fuel, transmission=car.transmission,
+                        id=len(db)+1)
+    db.append(new_car)
     save_db(db)
+    return new_car
 
 if __name__ == "__main__":
     uvicorn.run("carsharing:app", reload=True)
