@@ -31,7 +31,7 @@ def car_by_id(id: int) -> dict:
         raise HTTPException(status_code=404, detail=f"No car with id={id}.")
 #You can make a request like this: http://127.0.0.1:8000/api/cars/1
 
-@app.post("/api/cars") #Post operation, cannot be called as an url
+@app.post("/api/cars", response_model=CarOutput) #Post operation, cannot be called as an url. Including the response model to specify and validate the output as a CarOutput
 def add_car(car:CarInput) -> CarOutput:
     new_car = CarOutput(size=car.size, doors=car.doors,
                         fuel=car.fuel, transmission=car.transmission,
