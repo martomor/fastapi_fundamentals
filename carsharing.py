@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException
 import uvicorn
 
-from sqlmodel import SQLModel, create_engine
+from sqlmodel import SQLModel, Session, create_engine
 
-from schemas import CarInput, CarOutput, TripInput, TripOutput, load_db, save_db
+from schemas import Car, CarInput, CarOutput, TripInput, TripOutput, load_db, save_db
 
 app = FastAPI(title="Car Sharing")
 
@@ -44,14 +44,15 @@ def car_by_id(id: int) -> dict:
         raise HTTPException(status_code=404, detail=f"No car with id={id}.")
 #You can make a request like this: http://127.0.0.1:8000/api/cars/1
 
-@app.post("/api/cars", response_model=CarOutput) #Post operation, cannot be called as an url. Including the response model to specify and validate the output as a CarOutput
-def add_car(car:CarInput) -> CarOutput:
-    new_car = CarOutput(size=car.size, doors=car.doors,
-                        fuel=car.fuel, transmission=car.transmission,
-                        id=len(db)+1)
-    db.append(new_car)
-    save_db(db)
-    return new_car
+@app.post("/api/cars", response_model=Car) #Post operation, cannot be called as an url. Including the response model to specify and validate the output as a CarOutput or Car
+def add_car(car_input:CarInput) -> Car:
+    with Session(engine) as session: #Database transaction, it will only be executed if everything works
+        new_car = Car.from_orm(car_input)
+        session.add(new_car)
+        session.commit()
+        session.refresh(new_car) #We refresh to get the id
+        return new_car
+
 
 @app.delete("/api/cars/{id}", status_code=204)
 def remove_car(id:int ) -> None:
