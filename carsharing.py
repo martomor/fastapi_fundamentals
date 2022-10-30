@@ -37,12 +37,12 @@ def get_cars(size:str|None = None, doors:int|None = None,
 
 #You can make a request like this: http://127.0.0.1:8000/api/cars?size=s&doors=3
 
-@app.get("/api/cars/{id}") #Path parameter - This creates a unique url for each car
-def car_by_id(id: int) -> dict:
+@app.get("/api/cars/{id}", response_model=Car) #Path parameter - This creates a unique url for each car
+def car_by_id(id: int, session: Session = Depends(get_session)) -> Car:
     """Returns the information of a car by id"""
-    result = [car for car in db if car.id == id]
-    if result:
-        return result[0]
+    car = session.get(Car, id)
+    if car:
+        return car
     else:
         raise HTTPException(status_code=404, detail=f"No car with id={id}.")
 #You can make a request like this: http://127.0.0.1:8000/api/cars/1
@@ -57,25 +57,24 @@ def add_car(car_input:CarInput, session: Session = Depends(get_session)) -> Car:
 
 
 @app.delete("/api/cars/{id}", status_code=204)
-def remove_car(id:int ) -> None:
-    matches = [car for car in db if car.id==id]
-    if matches:
-        car = matches[0]
-        db.remove(car)
-        save_db(db)
+def remove_car(id:int, session: Session = Depends(get_session)) -> None:
+    car = session.get(Car, id)
+    if car:
+        session.delete(car)
+        session.commit()
     else:
         raise HTTPException(status_code=404, detail=f"No car with id={id}.")
 
-@app.put("/api/cars/{id}", response_model=CarOutput) #Example of having a path parameters and an input body
-def change_car(id: int, new_data: CarInput) -> CarOutput:
-    matches = [car for car in db if car.id == id]
-    if matches:
-        car = matches[0]
+@app.put("/api/cars/{id}", response_model=Car) #Example of having a path parameters and an input body
+def change_car(id: int, new_data: CarInput,
+               session: Session = Depends(get_session)) -> Car:
+    car = session.get(Car, id)
+    if car:
         car.fuel =  new_data.fuel
         car.transmission = new_data.transmission
         car.size = new_data.size
         car.doors = new_data.doors
-        save_db(db)
+        session.commit()
         return car
     else:
         raise HTTPException(status_code=404, detail=f"No car with id={id}.")
