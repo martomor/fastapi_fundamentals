@@ -1,11 +1,24 @@
 from fastapi import FastAPI, HTTPException
 import uvicorn
 
+from sqlmodel import SQLModel, create_engine
+
 from schemas import CarInput, CarOutput, TripInput, TripOutput, load_db, save_db
 
 app = FastAPI(title="Car Sharing")
 
 db = load_db()
+
+engine = create_engine(
+    "sqlite:///carsharing.db",
+    connect_args={"check_same_thread": False}, #Needed for SQlite and FastAPI
+    echo=True #Log generated SQL - Not for prod
+)
+
+@app.on_event("startup") # On startup will be loaded after all the code has been declared
+def on_startup():
+    SQLModel.metadata.create_all(engine) #Creates the database at start event
+    
 
 
 @app.get("/api/cars")
