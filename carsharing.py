@@ -1,7 +1,8 @@
 from fastapi import FastAPI, HTTPException
+from requests import session
 import uvicorn
 
-from sqlmodel import SQLModel, Session, create_engine
+from sqlmodel import SQLModel, Session, create_engine, select
 
 from schemas import Car, CarInput, CarOutput, TripInput, TripOutput, load_db, save_db
 
@@ -25,12 +26,13 @@ def on_startup():
 def get_cars(size:str|None = None, doors:int|None = None) -> list: #size:str|None means that we accept str or none values
 # def get_cars(size:Optional[str] = None, doors:Optional[str] = None) -> List: for python < 3.10 
     """Return all car or filter by size or number of doors """
-    result = db
-    if size:
-        result = [car for car in result if car.size == size]
-    if doors:
-        result = [car for car in result if car.doors == doors]
-    return result
+    with Session(engine) as session: #Creates an SQL query 
+        query = select(Car)
+        if size:
+            query = query.where(Car.size == size)
+        if doors:
+            query = query.where(Car.doors >= doors)
+        return session.exec(query).all()
 
 #You can make a request like this: http://127.0.0.1:8000/api/cars?size=s&doors=3
 
