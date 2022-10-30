@@ -8,6 +8,15 @@ class CarInput(BaseModel): #Pydantic makes sure to parse all items into the type
     transmission: str|None = "auto"
 # pydantic methods can be accesed as:
 # c.json() or c.dict()
+    class Config: #This provide example documentation for tools like postman
+        schema_extra = {
+            "example" : {
+                "size": "m",
+                "doors": 5,
+                "transmission": "manual",
+                "fuel":"hybrid"
+            }
+        }
 
 class CarOutput(CarInput):
     id:int
