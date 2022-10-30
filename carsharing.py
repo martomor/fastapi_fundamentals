@@ -1,5 +1,4 @@
-from fastapi import FastAPI, HTTPException
-from requests import session
+from fastapi import Depends, FastAPI, HTTPException
 import uvicorn
 
 from sqlmodel import SQLModel, Session, create_engine, select
@@ -20,19 +19,21 @@ engine = create_engine(
 def on_startup():
     SQLModel.metadata.create_all(engine) #Creates the database at start event
     
+def get_session():
+    with Session(engine) as session:
+        yield session #The with session will be closed as soon as the get_session execution is finished. This wraps everything inside the tiwh block. If anything goes wrong, it will revert the entire operation.
 
 
 @app.get("/api/cars")
-def get_cars(size:str|None = None, doors:int|None = None) -> list: #size:str|None means that we accept str or none values
-# def get_cars(size:Optional[str] = None, doors:Optional[str] = None) -> List: for python < 3.10 
+def get_cars(size:str|None = None, doors:int|None = None,
+            session: Session = Depends(get_session)) -> list: # We are not calling the function, we are passing it as a value to depends. 
     """Return all car or filter by size or number of doors """
-    with Session(engine) as session: #Creates an SQL query 
-        query = select(Car)
-        if size:
-            query = query.where(Car.size == size)
-        if doors:
-            query = query.where(Car.doors >= doors)
-        return session.exec(query).all()
+    query = select(Car)
+    if size:
+        query = query.where(Car.size == size)
+    if doors:
+        query = query.where(Car.doors >= doors)
+    return session.exec(query).all()
 
 #You can make a request like this: http://127.0.0.1:8000/api/cars?size=s&doors=3
 
@@ -47,13 +48,12 @@ def car_by_id(id: int) -> dict:
 #You can make a request like this: http://127.0.0.1:8000/api/cars/1
 
 @app.post("/api/cars", response_model=Car) #Post operation, cannot be called as an url. Including the response model to specify and validate the output as a CarOutput or Car
-def add_car(car_input:CarInput) -> Car:
-    with Session(engine) as session: #Database transaction, it will only be executed if everything works
-        new_car = Car.from_orm(car_input)
-        session.add(new_car)
-        session.commit()
-        session.refresh(new_car) #We refresh to get the id
-        return new_car
+def add_car(car_input:CarInput, session: Session = Depends(get_session)) -> Car:
+    new_car = Car.from_orm(car_input)
+    session.add(new_car)
+    session.commit()
+    session.refresh(new_car) #We refresh to get the id
+    return new_car
 
 
 @app.delete("/api/cars/{id}", status_code=204)
