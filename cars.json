@@ -4,69 +4,86 @@
         "fuel": "gasoline",
         "doors": 3,
         "transmission": "auto",
-        "id": 1
+        "id": 1,
+        "trips": []
     },
     {
         "size": "s",
         "fuel": "electric",
         "doors": 3,
         "transmission": "auto",
-        "id": 2
+        "id": 2,
+        "trips": []
     },
     {
         "size": "s",
         "fuel": "gasoline",
         "doors": 5,
         "transmission": "manual",
-        "id": 3
+        "id": 3,
+        "trips": []
     },
     {
         "size": "m",
         "fuel": "electric",
         "doors": 3,
         "transmission": "auto",
-        "id": 4
+        "id": 4,
+        "trips": []
     },
     {
         "size": "m",
         "fuel": "gasoline",
         "doors": 5,
         "transmission": "manual",
-        "id": 6
+        "id": 6,
+        "trips": [
+            {
+                "start": 1,
+                "end": 5,
+                "description": "test",
+                "id": 1
+            }
+        ]
     },
     {
         "size": "l",
         "fuel": "diesel",
         "doors": 5,
         "transmission": "manual",
-        "id": 7
+        "id": 7,
+        "trips": []
     },
     {
         "size": "l",
         "fuel": "electric",
         "doors": 5,
         "transmission": "auto",
-        "id": 8
+        "id": 8,
+        "trips": []
     },
     {
         "size": "l",
         "fuel": "hybrid",
         "doors": 5,
         "transmission": "auto",
-        "id": 9
+        "id": 9,
+        "trips": []
     },
     {
         "size": "string",
         "fuel": "electric",
         "doors": 0,
         "transmission": "auto",
-        "id": 0
+        "id": 0,
+        "trips": []
     },
     {
         "size": "size",
         "fuel": "hybrid",
         "doors": 3,
         "transmission": "manual",
-        "id": 11
+        "id": 11,
+        "trips": []
     }
 ]

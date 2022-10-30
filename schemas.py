@@ -1,6 +1,15 @@
 import json
 from pydantic import BaseModel
 
+class TripInput(BaseModel):
+    start: int
+    end: int
+    description: str
+
+class TripOutput(TripInput):
+    id:int
+
+
 class CarInput(BaseModel): #Pydantic makes sure to parse all items into the types specified
     size: str
     fuel: str|None = "electric" #Default values
@@ -20,6 +29,7 @@ class CarInput(BaseModel): #Pydantic makes sure to parse all items into the type
 
 class CarOutput(CarInput):
     id:int
+    trips: list[TripOutput] = [] #Adding nested model
 
 def load_db() -> list[CarOutput]:
     """Load a list of Car objects from a JSON file"""
