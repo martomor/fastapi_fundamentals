@@ -1,7 +1,8 @@
 import json
-from pydantic import BaseModel
+from sqlalchemy import table
+from sqlmodel import SQLModel, Field #SQL Model inherits from pydantic models
 
-class TripInput(BaseModel):
+class TripInput(SQLModel):
     start: int
     end: int
     description: str
@@ -10,7 +11,7 @@ class TripOutput(TripInput):
     id:int
 
 
-class CarInput(BaseModel): #Pydantic makes sure to parse all items into the types specified
+class CarInput(SQLModel): #Pydantic makes sure to parse all items into the types specified
     size: str
     fuel: str|None = "electric" #Default values
     doors: int
@@ -26,6 +27,10 @@ class CarInput(BaseModel): #Pydantic makes sure to parse all items into the type
                 "fuel":"hybrid"
             }
         }
+
+
+class Car(CarInput, table=True): #Tells SQL model that we want to have a database for this model
+    id: int | None = Field(primary_key=True, default=None)
 
 class CarOutput(CarInput):
     id:int
