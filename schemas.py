@@ -1,6 +1,4 @@
-import json
-from sqlalchemy import table
-from sqlmodel import SQLModel, Field #SQL Model inherits from pydantic models
+from sqlmodel import Relationship, SQLModel, Field #SQL Model inherits from pydantic models
 
 class TripInput(SQLModel):
     start: int
@@ -11,6 +9,11 @@ class TripOutput(TripInput):
     id:int
 
 
+class Trip(TripInput, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    car_id: int = Field(foreign_key="car.id")
+    car: "Car" = Relationship(back_populates="trips")
+
 class CarInput(SQLModel): #Pydantic makes sure to parse all items into the types specified
     size: str
     fuel: str|None = "electric" #Default values
@@ -20,27 +23,19 @@ class CarInput(SQLModel): #Pydantic makes sure to parse all items into the types
 # c.json() or c.dict()
     class Config: #This provide example documentation for tools like postman
         schema_extra = {
-            "example" : {
+            "example": {
                 "size": "m",
                 "doors": 5,
                 "transmission": "manual",
-                "fuel":"hybrid"
+                "fuel": "hybrid"
             }
         }
 
 
-class Car(CarInput, table=True): #Tells SQL model that we want to have a database for this model
+class Car(CarInput, table=True):
     id: int | None = Field(primary_key=True, default=None)
+    trips: list[Trip] = Relationship(back_populates="car")
 
 class CarOutput(CarInput):
     id:int
     trips: list[TripOutput] = [] #Adding nested model
-
-def load_db() -> list[CarOutput]:
-    """Load a list of Car objects from a JSON file"""
-    with open ("cars.json") as f:
-        return [CarOutput.parse_obj(obj) for obj in json.load(f)]
-
-def save_db(cars: list[CarOutput]):
-    with open("cars.json", "w") as f:
-        json.dump([car.dict() for car in cars], f, indent=4)
