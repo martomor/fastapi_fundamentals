@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Form, Depends
+from fastapi import APIRouter, Request, Form, Depends, Cookie
 from sqlmodel import Session
 from starlette.responses import HTMLResponse #Library used to serve http
 from fastapi.templating import Jinja2Templates #For serving HTML files
@@ -11,7 +11,8 @@ router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
 @router.get("/", response_class=HTMLResponse) # so that we dont response json
-def home(request: Request):
+def home(request: Request, cars_cookie: str|None = Cookie(None)):
+    print(cars_cookie) # Printing the cookie, we could run something if the users has visited us before
     return templates.TemplateResponse("home.html", #Will read the home.html file and return the proper response
                                      {"request": request}) #This is mandatory
 
