@@ -1,5 +1,15 @@
 from sqlmodel import Relationship, SQLModel, Field #SQL Model inherits from pydantic models
 
+
+class UserOutput(SQLModel):
+    id:int
+    username: str
+
+class User(SQLModel, table=True):
+    id: int|None = Field(default=None, primary_key=True)
+    username: str
+    password_hash: str = ""
+
 class TripInput(SQLModel):
     start: int
     end: int
