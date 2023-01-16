@@ -1,4 +1,5 @@
-from schemas import Car, CarInput, CarOutput, Trip, TripInput
+from routers.auth import get_current_user
+from schemas import Car, CarInput, CarOutput, Trip, TripInput, User
 from db import get_session
 from fastapi import Depends, HTTPException, APIRouter
 from sqlmodel import Session, select
@@ -30,7 +31,10 @@ def car_by_id(id: int, session: Session = Depends(get_session)) -> Car:
 #You can make a request like this: http://127.0.0.1:8000/api/cars/1
 
 @router.post("/", response_model=Car) #Post operation, cannot be called as an url. Including the response model to specify and validate the output as a CarOutput or Car
-def add_car(car_input:CarInput, session: Session = Depends(get_session)) -> Car:
+def add_car(car_input:CarInput, 
+            session: Session = Depends(get_session),
+            user: User = Depends(get_current_user) # The operation will ask for a logged in user in here
+            ) -> Car:
     new_car = Car.from_orm(car_input)
     session.add(new_car)
     session.commit()
