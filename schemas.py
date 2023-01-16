@@ -1,5 +1,6 @@
-from sqlmodel import Relationship, SQLModel, Field #SQL Model inherits from pydantic models
+from sqlmodel import VARCHAR, Column, Relationship, SQLModel, Field #SQL Model inherits from pydantic models
 from passlib.context import CryptContext
+
 pwd_context = CryptContext(schemes=["bcrypt"])
 
 class UserOutput(SQLModel):
@@ -8,7 +9,7 @@ class UserOutput(SQLModel):
 
 class User(SQLModel, table=True):
     id: int|None = Field(default=None, primary_key=True)
-    username: str
+    username:str = Field(sa_column=Column("username", VARCHAR, unique=True, index=True)) # to specify unique property and index
     password_hash: str = ""
 
     def set_password(self, password):
