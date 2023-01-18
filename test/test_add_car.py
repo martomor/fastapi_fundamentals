@@ -19,7 +19,7 @@ def test_add_car():
     assert car['doors'] == 7
     assert car['size'] == 'xxl'
 
-def test_add_car_with_mock_session():
+def test_add_car_with_mock_session(): #To test specific function components
     mock_session = Mock()
     input = CarInput(doors=2, size = "xl")
     user = User(username="martin")
