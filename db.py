@@ -1,7 +1,7 @@
 from sqlmodel import create_engine, Session
 
 engine = create_engine(
-    "sqlite:///carsharing.db",
+    "sqlite:///db/carsharing.db",
     connect_args={"check_same_thread": False}, #Needed for SQlite and FastAPI
     echo=True #Log generated SQL - Not for prod
 )

@@ -12,7 +12,7 @@ from schemas import User
 
 
 engine = create_engine(
-    "sqlite:///carsharing.db",
+    "sqlite:///db/carsharing.db",
     connect_args={"check_same_thread": False},  # Needed for SQLite
     echo=True # Log generated SQL
 )
