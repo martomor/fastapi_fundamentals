@@ -13,7 +13,26 @@ This repo is based on the work done by Reindert-Jan Ekker on [FastAPI Fundamenta
 
 You can find the original implementation in here: [codesensei-courses/fastapi_fundamentals](https://github.com/codesensei-courses/fastapi_fundamentals) 
 
+
+
 # How to use this repository?
+
+The content of this repo has been organized following the structure that was given on the course. Below links will point you to the specific branches were each topic was covered. Inside each branch, you can also find the subtopics as commits:
+
+- [Basic implementation](https://github.com/martomor/fastapi_fundamentals/tree/basic_implementation)
+- [Serving data](https://github.com/martomor/fastapi_fundamentals/tree/serving_data)
+  - [Adding Parameters](https://github.com/martomor/fastapi_fundamentals/commit/bbfa5b93d0f0b7951f2369b4cb0df0d0f4fa11d2)
+  - [Get operation to return all cars from a list](https://github.com/martomor/fastapi_fundamentals/commit/0abddd3b0febc26807460988ff4dee3fd576d72b)
+  - [Add an optional query parameter to filter by size](https://github.com/martomor/fastapi_fundamentals/commit/b2567b0e9fa58d4615e3db63b5a730e51eed9872)
+  - [Add typed optional parameters](https://github.com/martomor/fastapi_fundamentals/commit/3997c30cf51b34630596f989b54ec7e4cf46b5f5)
+  - [Adding path parameters](https://github.com/martomor/fastapi_fundamentals/commit/a99ba71a9d31e00ee5f585f6aeab5b0f4acc404f)
+  - [Return http exceptions 404](https://github.com/martomor/fastapi_fundamentals/commit/7a5baaaf91480712d011cef47501f8b45fd31493)
+- [Serving structured data usng PyDantic](https://github.com/martomor/fastapi_fundamentals/tree/serving_with_pydantic_models)
+- [Using databases with fastapi](https://github.com/martomor/fastapi_fundamentals/tree/database_with_fastapi)
+- [Working with HTTP](https://github.com/martomor/fastapi_fundamentals/tree/http_and_fastapi)
+- [Authentication](https://github.com/martomor/fastapi_fundamentals/tree/adding_authentication)
+- [Testin and deployment](https://github.com/martomor/fastapi_fundamentals/tree/testing_and_deployment)
+- [Docker](https://github.com/martomor/fastapi_fundamentals/tree/docker)
 
 ### Requirements
 
