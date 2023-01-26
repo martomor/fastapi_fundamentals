@@ -63,6 +63,7 @@ The content of this repo has been organized following the structure that was giv
 - [Testing and deployment](https://github.com/martomor/fastapi_fundamentals/tree/testing_and_deployment)
   - [Unit testing](https://github.com/martomor/fastapi_fundamentals/commit/7ab242ccb7e34e34bb3515646eb64a62840b8221)
 - [Docker](https://github.com/martomor/fastapi_fundamentals/tree/docker)
+  - [adding a docker container](https://github.com/martomor/fastapi_fundamentals/commit/ee692ecf2582439db0fec17f458a910a47f47cad)
 
 ### Requirements
 
